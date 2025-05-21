@@ -35,7 +35,7 @@ struct CreateProjects: AsyncMigration {
 
         try await database.schema(Projects.schema)
             .id()
-            .field("name", .string, .required)
+            .field(.name, .string, .required)
             .field("summary", .string)
             .field("type", projectType, .required)
             .field("state", taskState, .required)

@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "TaskeandoAPI",
     platforms: [
-       .macOS(.v13)
+       .macOS(.v15)
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.

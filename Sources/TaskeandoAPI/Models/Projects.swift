@@ -44,6 +44,11 @@ final class Projects: Model, Content, @unchecked Sendable {
     @Timestamp(key: "created_at", on: .create) var createdAt: Date?
     @Timestamp(key: "updated_at", on: .update) var updatedAt: Date?
     
+    @Children(for: \.$project) var tasks: [Tasks]
+    @Children(for: \.$project) var tags: [Tags]
+    
+    @Siblings(through: ProjectsUsers.self, from: \.$project, to: \.$user) var users: [Users]
+    
     init() {}
     
     init(id: UUID? = nil, name: String, summary: String? = nil, type: ProjectType, state: TaskState) {
