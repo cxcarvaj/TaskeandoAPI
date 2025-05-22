@@ -3,6 +3,7 @@ import Fluent
 import FluentPostgresDriver
 import Leaf
 import Vapor
+import JWT
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -44,6 +45,9 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreateUserTokens())
     
     app.views.use(.leaf)
+    
+    //El hmac es mi secret que forma parte del JWT
+    await app.jwt.keys.add(hmac: "jobsSteve", digestAlgorithm: .sha256)
 
     // register routes
     try routes(app)

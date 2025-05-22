@@ -57,3 +57,10 @@ extension Users: ModelAuthenticatable {
         try Bcrypt.verify(password, created: self.password)
     }
 }
+
+extension Users {
+    func generateToken() throws -> UserTokens {
+        try UserTokens(token: [UInt8].random(count: 32).base64,
+                       user: requireID())
+    }
+}
