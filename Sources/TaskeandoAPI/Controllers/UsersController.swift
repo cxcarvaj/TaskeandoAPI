@@ -29,8 +29,10 @@ struct UsersController: RouteCollection {
     func createUser(_ req: Request) async throws -> HTTPStatus {
         try Users.validate(content: req)
         let newUser = try req.content.decode(Users.self)
+        newUser.role = .none
         newUser.password = try Bcrypt.hash(newUser.password)
         try await newUser.create(on: req.db)
+        try await SendGrid.shared.sendEmail(req: req, to: newUser.email)
         return .created
     }
     
