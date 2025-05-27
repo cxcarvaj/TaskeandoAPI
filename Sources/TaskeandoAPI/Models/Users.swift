@@ -21,12 +21,14 @@ final class Users: Model, Content, @unchecked Sendable {
     @Field(key: "password") var password: String
     @Field(key: .name) var name: String
     @Field(key: "avatar") var avatar: String?
+    @Field(key: "email_token") var emailToken: String?
     @Enum(key: "role") var role: UserType
     
     @Timestamp(key: "created_at", on: .create) var createdAt: Date?
     @Timestamp(key: "updated_at", on: .update) var updatedAt: Date?
     
     @Children(for: \.$user) var tasks: [Tasks]
+    @Children(for: \.$user) var tokens: [UserTokens]
     
     @Siblings(through: ProjectsUsers.self, from: \.$user, to: \.$project) var projects: [Projects]
     

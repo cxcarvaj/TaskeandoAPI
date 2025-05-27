@@ -1,25 +1,29 @@
 //
-//  ProjectController.swift
+//  ProjectControllerJWT.swift
 //  TaskeandoAPI
 //
-//  Created by Carlos Xavier Carvajal Villegas on 22/5/25.
+//  Created by Carlos Xavier Carvajal Villegas on 26/5/25.
 //
 
 
 import Vapor
 import Fluent
 
-struct ProjectController: RouteCollection {
+struct ProjectControllerJWT: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let api = routes.grouped("api")
-        // Funcionan siempre y cuando usemos OAUTH_TOKEN
-        let secureToken = api.grouped(UserTokens.authenticator(), Users.guardMiddleware())
-        secureToken.group("project") { group in
+        
+        let secureToken = api.grouped(
+            UserJWTAuthenticator(),     // <-- Primero, para cargar el usuario desde JWT
+            Users.guardMiddleware(),    // <-- Luego, para requerir usuario autenticado
+            JWTExpiredMiddleware()      // <-- Tu middleware custom, opcionalmente al final
+        )
+        secureToken.group("projectJWT") { group in
             group.post(use: createProject)
             group.get(use: getProjects)
             group.get(":projectID", use: getProject)
             group.get("allProjects", use: getProjectsAdmin)
-            group.get(":projectID", "admin", use: getProjectsAdmin)
+            group.get(":projectID", "admin", use: getProjectAdmin)
         }
     }
     

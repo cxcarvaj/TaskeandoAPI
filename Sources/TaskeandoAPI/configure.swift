@@ -4,6 +4,7 @@ import FluentPostgresDriver
 import Leaf
 import Vapor
 import JWT
+import Redis
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -48,6 +49,8 @@ public func configure(_ app: Application) async throws {
     
     //El hmac es mi secret que forma parte del JWT
     await app.jwt.keys.add(hmac: "jobsSteve", digestAlgorithm: .sha256)
+    
+    app.redis.configuration = try RedisConfiguration(hostname: "localhost")
 
     // register routes
     try routes(app)

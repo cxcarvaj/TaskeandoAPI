@@ -47,12 +47,13 @@ struct JSONWebTokenPayload: JWTPayload {
     var exp: ExpirationClaim
     var iss: IssuerClaim //El que lo generó
     var aud: AudienceClaim //Para quien ha sido generado
+    var jti: JWKIdentifier
     
     func verify(using algorithm: some JWTAlgorithm) async throws {
         try exp.verifyNotExpired()
         try aud.verifyIntendedAudience(includes: "com.cxcarvaj.Taskeando")
-//        if iss.value != "TaskeandoAPI" {
-//            throw JWTError.invalidHeaderField(reason: "El issuer no es correcto")
-//        }
+        if iss.value != "TaskeandoAPI" {
+            throw JWTError.invalidHeaderField(reason: "El issuer no es correcto")
+        }
     }
 }

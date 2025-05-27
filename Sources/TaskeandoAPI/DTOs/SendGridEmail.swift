@@ -86,7 +86,7 @@ struct SendGrid {
         <h1>¡Bienvenido a Taskeando!</h1>
         <p>Estimado usuario,</p>
         <p>Nos complace darte la bienvenida a Taskeando, tu nuevo aliado en la gestión de tareas. Estamos emocionados de que te unas a nuestra comunidad y esperamos que nuestra plataforma te ayude a alcanzar tus objetivos de manera eficiente y organizada.</p>
-        <p>En SwiftTask, creemos que una buena organización es clave para el éxito. Por ello, hemos diseñado una herramienta intuitiva y potente que te permitirá gestionar tus tareas y proyectos con facilidad.</p>
+        <p>En Taskeando, creemos que una buena organización es clave para el éxito. Por ello, hemos diseñado una herramienta intuitiva y potente que te permitirá gestionar tus tareas y proyectos con facilidad.</p>
         <p>Para empezar, te invitamos a explorar las siguientes funcionalidades:</p>
         <ul>
             <li>Creación y seguimiento de tareas</li>
@@ -109,13 +109,12 @@ struct SendGrid {
     """#
     }
     
-    func sendEmail(req: Request, to email: String) async throws {
-        let token = [UInt8].random(count: 16).base64
+    func sendEmail(req: Request, to email: String, token: String) async throws {
         let emailMsg = SendGridEmail(personalizations: [
             SendGridEmail.Personalization(
                 to: [SendGridEmail.Personalization.Recipient(email: email)])
         ],
-                                     from: SendGridEmail.From(email: "alumnos@acoding.academy"),
+                                     from: SendGridEmail.From(email: "cxcarvaj@gmail.com"),
                                      subject: "Bienvenido a Taskeando",
                                      content: [
                                         SendGridEmail.EmailContent(type: "text/html",
