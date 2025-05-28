@@ -34,12 +34,13 @@ final class Users: Model, Content, @unchecked Sendable {
     
     init() {}
     
-    init(id: UUID? = nil, email: String, password: String, name: String, avatar: String? = nil) {
+    init(id: UUID? = nil, email: String, password: String, name: String, avatar: String? = nil, role: UserType) {
         self.id = id
         self.email = email
         self.password = password
         self.name = name
         self.avatar = avatar
+        self.role = role
     }
 }
 

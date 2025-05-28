@@ -51,6 +51,7 @@ public func configure(_ app: Application) async throws {
     await app.jwt.keys.add(hmac: "jobsSteve", digestAlgorithm: .sha256)
     
     app.redis.configuration = try RedisConfiguration(hostname: "localhost")
+    app.jwt.apple.applicationIdentifier = "com.cxcarvaj.Taskeando"
 
     // register routes
     try routes(app)

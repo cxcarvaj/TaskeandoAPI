@@ -13,6 +13,7 @@ import Redis
 struct UsersController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let api = routes.grouped("api")
+        api.post("loginSIWA", use: loginSIWA)
         
         let create = api.grouped(AppAPIKeyMiddleware())
         create.post("createUser", use: createUser)
@@ -129,8 +130,25 @@ struct UsersController: RouteCollection {
         try await req.redis.setex(key, toJSON: jwt, expirationInSeconds: ttl)
     }
     
-    func isTokenInvalidated(_ jwt: JSONWebTokenPayload, on req: Request) async throws -> Bool {
-        let key = RedisKey(jwt.jti.string)
-        return try await req.redis.get(key, asJSON: JSONWebTokenPayload.self) != nil
-    }
+    func loginSIWA(_ req: Request) async throws -> Token {
+         let appleIdentityToken = try await req.jwt.apple.verify()
+         let siwaRequest = try req.content.decode(SIWARequest.self)
+         if let user = try await Users
+             .query(on: req.db)
+             .filter(\.$email == appleIdentityToken.subject.value)
+             .first() {
+             let payload = try generateJWT(user: user)
+             let jwtSign = try await req.jwt.sign(payload)
+             return Token(token: jwtSign)
+         } else {
+             let newUser = Users(email: appleIdentityToken.subject.value,
+                                 password: "",
+                                 name: "\(siwaRequest.lastName ?? ""), \(siwaRequest.name ?? "")",
+                                 role: .user)
+             try await newUser.create(on: req.db)
+             let payload = try generateJWT(user: newUser)
+             let jwtSign = try await req.jwt.sign(payload)
+             return Token(token: jwtSign)
+         }
+     }
 }
