@@ -36,6 +36,7 @@ struct UsersController: RouteCollection {
         )
         secureJWT.get("testConnectionJWT", use: testConnectionJWT)
         secureJWT.get("refreshJWT", use: refreshJWT)
+        secureJWT.get("logoutJWT", use: logoutJWT)
     }
     
     func createUser(_ req: Request) async throws -> HTTPStatus {
@@ -151,4 +152,12 @@ struct UsersController: RouteCollection {
              return Token(token: jwtSign)
          }
      }
+    
+    func logoutJWT(_ req: Request) async throws -> HTTPStatus {
+        let user = try req.auth.require(Users.self)
+        guard user.role != .none else { throw Abort(.unauthorized) }
+        let payload = try await req.jwt.verify(as: JSONWebTokenPayload.self)
+        try await invalidateToken(payload, on: req)
+        return .continue
+    }
 }
