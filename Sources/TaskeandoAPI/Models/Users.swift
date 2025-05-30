@@ -66,4 +66,14 @@ extension Users {
         try UserTokens(token: [UInt8].random(count: 32).base64,
                        user: requireID())
     }
+    
+    struct PublicUser: Content {
+        let email: String
+        let name: String
+        let avatar: String?
+    }
+    
+    var toPublic: PublicUser {
+        PublicUser(email: email, name: name, avatar: avatar)
+    }
 }

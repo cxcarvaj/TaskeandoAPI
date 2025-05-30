@@ -59,3 +59,19 @@ final class Projects: Model, Content, @unchecked Sendable {
         self.state = state
     }
 }
+
+extension Projects {
+    struct PublicProjects: Content {
+        let id: UUID?
+        let name: String
+        let summary: String?
+        let type: ProjectType
+        let state: TaskState
+        let users: [Users.PublicUser]
+        let tasks: [Tasks.PublicTasks]
+    }
+    
+    var toPublic: PublicProjects {
+        PublicProjects(id: id, name: name, summary: summary, type: type, state: state, users: users.map(\.toPublic), tasks: tasks.map(\.toPublic))
+    }
+}

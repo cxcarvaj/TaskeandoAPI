@@ -43,7 +43,7 @@ struct ProjectController: RouteCollection {
         return .accepted
     }
     
-    func getProjects(req: Request) async throws -> [Projects] {
+    func getProjects(req: Request) async throws -> [Projects.PublicProjects] {
         let user = try req.auth.require(Users.self)
         return try await user.$projects
             .query(on: req.db)
@@ -51,9 +51,10 @@ struct ProjectController: RouteCollection {
             .with(\.$tasks)
             .with(\.$users)
             .all()
+            .map(\.toPublic)
     }
     
-    func getProject(req: Request) async throws -> Projects {
+    func getProject(req: Request) async throws -> Projects.PublicProjects {
         let user = try req.auth.require(Users.self)
         let id = try req.parameters.require("projectID", as: UUID.self)
         if let project = try await user.$projects
@@ -63,13 +64,13 @@ struct ProjectController: RouteCollection {
             .with(\.$tasks)
             .with(\.$users)
             .first() {
-            return project
+            return project.toPublic
         } else {
             throw Abort(.notFound)
         }
     }
     
-    func getProjectAdmin(req: Request) async throws -> Projects {
+    func getProjectAdmin(req: Request) async throws -> Projects.PublicProjects {
         let user = try req.auth.require(Users.self)
         let id = try req.parameters.require("projectID", as: UUID.self)
         if user.role == .admin {
@@ -80,7 +81,7 @@ struct ProjectController: RouteCollection {
                 .with(\.$tasks)
                 .with(\.$users)
                 .first() {
-                return project
+                return project.toPublic
             } else {
                 throw Abort(.notFound)
             }
@@ -89,7 +90,7 @@ struct ProjectController: RouteCollection {
         }
     }
     
-    func getProjectsAdmin(req: Request) async throws -> [Projects] {
+    func getProjectsAdmin(req: Request) async throws -> [Projects.PublicProjects] {
         let user = try req.auth.require(Users.self)
         if user.role == .admin {
             return try await Projects
@@ -98,6 +99,7 @@ struct ProjectController: RouteCollection {
                 .with(\.$tasks)
                 .with(\.$users)
                 .all()
+                .map(\.toPublic)
         } else {
             throw Abort(.forbidden)
         }

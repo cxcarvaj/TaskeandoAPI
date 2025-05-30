@@ -47,3 +47,21 @@ final class Tasks: Model, Content, @unchecked Sendable {
         self.$user.id = userID
     }
 }
+
+extension Tasks {
+    struct PublicTasks: Content {
+        let id: UUID?
+        let name: String
+        let summary: String
+        let dateInit: Date
+        let dateDeadline: Date?
+        let priority: TaskPriority
+        let state: TaskState
+        let daysRepeat: Int
+        let user: Users.PublicUser
+    }
+    
+    var toPublic: PublicTasks {
+        PublicTasks(id: id, name: name, summary: summary, dateInit: dateInit, dateDeadline: dateDeadline, priority: priority, state: state, daysRepeat: daysRepeat, user: user.toPublic)
+    }
+}
