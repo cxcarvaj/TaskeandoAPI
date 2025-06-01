@@ -5,6 +5,8 @@ func routes(_ app: Application) throws {
     try app.register(collection: UsersController())
     try app.register(collection: ProjectController())
     try app.register(collection: ProjectControllerJWT())
+    try app.register(collection: TaskControllerJWT())
+
     
     // Apple App Site Association
     app.get(".well-known", "apple-app-site-association") { req -> Response in

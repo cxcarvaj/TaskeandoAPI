@@ -52,7 +52,9 @@ struct ProjectControllerJWT: RouteCollection {
         return try await user.$projects
             .query(on: req.db)
             .with(\.$tags)
-            .with(\.$tasks)
+            .with(\.$tasks) {task in
+                task.with(\.$user)
+            }
             .with(\.$users)
             .all()
     }

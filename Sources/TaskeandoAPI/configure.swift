@@ -52,6 +52,18 @@ public func configure(_ app: Application) async throws {
     
     app.redis.configuration = try RedisConfiguration(hostname: "localhost")
     app.jwt.apple.applicationIdentifier = "com.cxcarvaj.Taskeando"
+    
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    
+    ContentConfiguration.global.use(decoder: decoder, for: .json)
+    
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    encoder.keyEncodingStrategy = .convertToSnakeCase
+    
+    ContentConfiguration.global.use(encoder: encoder, for: .json)
 
     // register routes
     try routes(app)
