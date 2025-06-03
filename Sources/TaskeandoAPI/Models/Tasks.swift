@@ -34,7 +34,7 @@ final class Tasks: Model, Content, @unchecked Sendable {
     
     init() { }
 
-    init(id: UUID? = nil, name: String, summary: String, dateInit: Date, dateDeadline: Date? = nil, priority: TaskPriority, state: TaskState, daysRepeat: Int, projectID: Projects.IDValue, userID: Users.IDValue) {
+    init(id: UUID? = nil, name: String, summary: String, dateInit: Date, dateDeadline: Date?, priority: TaskPriority, state: TaskState, daysRepeat: Int, projectID: Projects.IDValue, userID: Users.IDValue) {
         self.id = id
         self.name = name
         self.summary = summary

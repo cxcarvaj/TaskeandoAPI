@@ -20,7 +20,9 @@ let package = Package(
         // 🔐 JWT for secure login
         .package(url: "https://github.com/vapor/jwt.git", from: "5.0.0"),
         // 📊 REDIS for realtime database
-        .package(url: "https://github.com/vapor/redis.git", from: "4.0.0")
+        .package(url: "https://github.com/vapor/redis.git", from: "4.0.0"),
+        // 📲 Send APNS to a deviceAdd commentMore actions
+        .package(url: "https://github.com/vapor/apns.git", from: "4.0.0"),
     ],
     targets: [
         .executableTarget(
@@ -33,7 +35,8 @@ let package = Package(
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
                 .product(name: "JWT", package: "jwt"),
-                .product(name: "Redis", package: "redis")
+                .product(name: "Redis", package: "redis"),
+                .product(name: "VaporAPNS", package: "apns"),
             ],
             swiftSettings: swiftSettings
         ),

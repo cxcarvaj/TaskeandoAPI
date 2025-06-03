@@ -40,9 +40,11 @@ struct TaskControllerJWT: RouteCollection {
         
         try await userHasAccess(to: project, user: user, db: req.db)
         
-        let newTask = try Tasks(name: taskDTO.name,
+        let newTask = try Tasks(id: taskDTO.id,
+                                name: taskDTO.name,
                                 summary: taskDTO.summary,
                                 dateInit: taskDTO.dateInit,
+                                dateDeadline: taskDTO.dateDeadline,
                                 priority: taskDTO.priority,
                                 state: taskDTO.state,
                                 daysRepeat: taskDTO.daysRepeat,
