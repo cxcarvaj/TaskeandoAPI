@@ -29,6 +29,7 @@ final class Users: Model, Content, @unchecked Sendable {
     
     @Children(for: \.$user) var tasks: [Tasks]
     @Children(for: \.$user) var tokens: [UserTokens]
+    @Children(for: \.$user) var deviceTokens: [UserDeviceTokens]
     
     @Siblings(through: ProjectsUsers.self, from: \.$user, to: \.$project) var projects: [Projects]
     

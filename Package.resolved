@@ -1,5 +1,5 @@
 {
-  "originHash" : "3d594478d68c9e68aa439f52a6d17564ff0775da1fe085c24d1113e11dbf6ea1",
+  "originHash" : "519fb25e4ec9be1154b2089b216ed64193864e7ce330f0dce21a05df8ced309d",
   "pins" : [
     {
       "identity" : "apns",
@@ -134,6 +134,24 @@
       "state" : {
         "revision" : "9ef06112c41feb7170c8c9116361f170e2a2b1d1",
         "version" : "1.26.1"
+      }
+    },
+    {
+      "identity" : "queues",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/queues.git",
+      "state" : {
+        "revision" : "f1764d5fef7e8ede8f3585deb63ece01ea25c2db",
+        "version" : "1.17.2"
+      }
+    },
+    {
+      "identity" : "queues-redis-driver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/queues-redis-driver.git",
+      "state" : {
+        "revision" : "a3dac0d311cead67917ad4221feb061e3609b145",
+        "version" : "1.1.2"
       }
     },
     {

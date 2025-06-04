@@ -23,6 +23,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/redis.git", from: "4.0.0"),
         // 📲 Send APNS to a deviceAdd commentMore actions
         .package(url: "https://github.com/vapor/apns.git", from: "4.0.0"),
+        // 👷🏻‍♂️ Works on serverAdd commentMore actions
+        .package(url: "https://github.com/vapor/queues-redis-driver.git", from: "1.0.0"),
     ],
     targets: [
         .executableTarget(
@@ -37,6 +39,7 @@ let package = Package(
                 .product(name: "JWT", package: "jwt"),
                 .product(name: "Redis", package: "redis"),
                 .product(name: "VaporAPNS", package: "apns"),
+                .product(name: "QueuesRedisDriver", package: "queues-redis-driver"),
             ],
             swiftSettings: swiftSettings
         ),

@@ -37,6 +37,7 @@ struct UsersController: RouteCollection {
         secureJWT.get("testConnectionJWT", use: testConnectionJWT)
         secureJWT.get("refreshJWT", use: refreshJWT)
         secureJWT.get("logoutJWT", use: logoutJWT)
+        secureJWT.post("deviceAPNSToken", use: deviceAPNSToken)
     }
     
     func createUser(_ req: Request) async throws -> HTTPStatus {
@@ -100,6 +101,21 @@ struct UsersController: RouteCollection {
         let payloadNew = try generateJWT(user: user)
         let jwtSign = try await req.jwt.sign(payloadNew)
         return Token(token: jwtSign)
+    }
+    
+    func deviceAPNSToken(_ req: Request) async throws -> HTTPStatus {
+        let user = try req.auth.require(Users.self)
+        guard user.role != .none else { throw Abort(.unauthorized) }
+        let token = try req.content.decode(Token.self).token
+        let queryToken = try await UserDeviceTokens
+            .query(on: req.db)
+            .filter(\.$deviceToken == token)
+            .first()
+        if queryToken == nil {
+            let newToken = try UserDeviceTokens(deviceToken: token, user: user.requireID())
+            try await newToken.create(on: req.db)
+        }
+        return .accepted
     }
     
     func testConnection(_ req: Request) async throws -> String {
